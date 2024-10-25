@@ -8,7 +8,7 @@
    </head>
    <body>
       <div id="container" class="container">
-         <g:render template="/usersRactive" />
+         <g:render template="/users/usersRactive" />
       </div>
       <footer>
          <asset:javascript src="home.js"/>
