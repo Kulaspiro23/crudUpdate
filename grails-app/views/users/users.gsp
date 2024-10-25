@@ -11,7 +11,7 @@
          <g:render template="/users/usersRactive" />
       </div>
       <footer>
-         <asset:javascript src="home.js"/>
+         <asset:javascript src="users.js"/>
       </footer>
    </body>
 </html>
