@@ -4,8 +4,14 @@ info:
     version: '@info.app.version@'
     grailsVersion: '@info.app.grailsVersion@'
 grails:
+  serverURL: 'http://localhost:8080'
   controllers:
     defaultScope: singleton
+  asset:
+    pipeline:
+      enabled: true
+  reload:
+    enabled: true
   views:
     default:
       codec: html
@@ -69,4 +75,12 @@ spring:
                 - grails-app/views/**
                 - grails-app/i18n/**
                 - grails-app/conf/**
-            enabled: false
+development:
+    grails:
+      serverURL: 'http://localhost:8080'
+      plugin:
+        springsecurity:
+          secureChannel:
+            useHeaderCheckChannelSecurity: false
+          portMapper:
+            httpPort: 8080

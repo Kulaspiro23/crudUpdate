@@ -15,6 +15,7 @@ group = "mira.pos"
 repositories {
     mavenCentral()
     maven { url "https://repo.grails.org/grails/core/" }
+    maven { url "https://grails.jfrog.io/grails/plugins" }
 }
 
 configurations {
@@ -48,7 +49,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     compileOnly("io.micronaut:micronaut-inject-groovy")
     console("org.grails:grails-console")
-    runtimeOnly("com.bertramlabs.plugins:asset-pipeline-grails:4.3.0")
+    implementation("com.bertramlabs.plugins:asset-pipeline-grails:4.3.0")
+    implementation 'com.bertramlabs.plugins:less-asset-pipeline:4.3.0'
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.apache.tomcat:tomcat-jdbc")
     runtimeOnly("org.fusesource.jansi:jansi:1.18")
@@ -64,6 +66,12 @@ dependencies {
     testRuntimeOnly("org.seleniumhq.selenium:selenium-firefox-driver:4.19.1")
     testRuntimeOnly("org.seleniumhq.selenium:selenium-safari-driver:4.19.1")
     testImplementation("io.micronaut:micronaut-http-client")
+
+    implementation("org.grails.plugins:asset-pipeline:2.14.1.1")
+
+
+
+
 
 }
 
