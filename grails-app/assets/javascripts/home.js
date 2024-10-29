@@ -1,8 +1,4 @@
-// this homeRjs should be in the common.js or ractiveTemplate.js file for easy access of template
-let homeRjs = new Ractive({ 
-    el: '#container',
-    template: '#homeRactive'   
-});
+import { homeRjs } from './ractiveTemplate.js'
 
 let init = () =>{
     let url = '/home/getUserLoginDetails';

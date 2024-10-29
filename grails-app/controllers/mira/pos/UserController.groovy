@@ -1,7 +1,10 @@
 package mira.pos
-
+import grails.converters.JSON
+import java.text.SimpleDateFormat 
 
 class UserController {
+
+    def userService
 
     def index() {
 
@@ -13,10 +16,7 @@ class UserController {
 
     def getUserData() {
         try {
-
-
             List<Map> userList = userService.getAllUsers()
-
             render userList as JSON
         } catch (Exception e) {
             log.error("Error fetching user data: ${e.message}", e)
@@ -26,7 +26,7 @@ class UserController {
 
     def createUser() {
         try {
-            def requestData = request.JSON // Retrieve the JSON body from the request
+            def requestData = request.JSON 
 
             // Extract user data from the request
             String username = requestData.username
@@ -34,14 +34,12 @@ class UserController {
             String firstName = requestData.firstName
             String middleName = requestData.middleName
             String lastName = requestData.lastName
+            Long userType = requestData.userType
             String dobString = requestData.dob
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy")
-            Date dob = dateFormat.parse(dobString) 
 
 
             // Call the service to create the user
-            if (userService.createUser(username, password, firstName, middleName, lastName, dob)) {
+            if (userService.createUser(username, password, firstName, middleName, lastName, userType, dobString)) {
                 render status: 201, text: 'User created successfully' // Return success status
             } else {
                 render status: 500, text: 'Failed to create user' // Return failure status
@@ -52,28 +50,25 @@ class UserController {
         }
     }
 
-    // def updateUser(Long id){
-    //     try{
-    //         def requestData = request.JSON
+    def updateUser(Long id){
+        try{
+            def requestData = request.JSON
 
-    //         String firstName = requestData.firstName
-    //         String middleName = requestData.middleName
-    //         String lastName = requestData.lastName
-    //         String dobString = requestData.dob
+            String firstName = requestData.firstName
+            String middleName = requestData.middleName
+            String lastName = requestData.lastName
+            String dobString = requestData.dob
 
-    //         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd")
-    //         Date dob = dateFormat.parse(dobString)
-
-    //         if (userService.updateUser(id, firstName, middleName, lastName, dob)){
-    //             render status: 200, text:'User  updated successfully'
-    //         }esle{
-    //             render status: 400, text: 'User not found'
-    //         }
-    //     }catch (Exception e){
-    //         log.error("Error updating user: ${e.message}", e)
-    //         render status: 500, text: 'Internal Server Error'
-    //     }
-    // }
+            if (userService.updateUser(id, firstName, middleName, lastName, dobString)){
+                render status: 200, text:'User  updated successfully'
+            }else{
+                render status: 400, text: 'User not found'
+            }
+        }catch (Exception e){
+            log.error("Error updating user: ${e.message}", e)
+            render status: 500, text: 'Internal Server Error'
+        }
+    }
 
     def deleteUser(Long id){
         try{
