@@ -12,8 +12,9 @@
         <div class="card-body pb-3">
           <div class="d-grid gap-1">
          <label for="txtUsername">Username:</label>
-            <input type="text" class="form-control" id="txtUsername" placeholder = "Username"/>
-                      <label for="txtPassword" class="mt-2">Password:</label>
+          <input type="text" class="form-control" id="txtUsername" placeholder = "Username"/>
+
+          <label for="txtPassword" class="mt-2">Password:</label>
             <input type="password" class="form-control" id="txtPassword"  placeholder = "Password"/>
             <button class="form-control btn btn-primary" type="button" id = "btnLogin">Login</button>
             <small>

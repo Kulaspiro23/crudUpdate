@@ -4,6 +4,10 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
       <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/ractive"></script>
+      <script type="module" src="${resource(dir: 'javascripts', file: 'ractiveTemplate.js')}"></script>
+      <script type="module" src="${resource(dir: 'javascripts', file: 'home.js')}"></script>
+
+
       <meta name="layout" content="template"/>
        <%-- <asset:stylesheet src="style.css"/> --%>
    </head>
@@ -12,8 +16,6 @@
          <g:render template="/homeRactive" />
       </div>
       <footer>
-        <asset:javascript src="home.js"/>
-   
       </footer>
    </body>
 </html>

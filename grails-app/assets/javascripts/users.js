@@ -48,37 +48,62 @@ function createUser(event) {
 
 function editUser(user_id) {
     const user = homeRjs.get('users').find(u => u.user_id === user_id); // Find user by ID
+
+    homeRjs.set('activeId',user.user_id)
+
     if (user) {
-        console.log("User found for editing:", user)
-        // Populate the edit form with user data
         $('#editFirstName').val(user.firstName);
         $('#editMiddleName').val(user.middleName || '');
         $('#editLastName').val(user.lastName);
-        $('#editDob').val(user.dob);
+
+        if (user.dob) {
+            const [day, month, year] = user.dob.split('-');
+            const formattedDate = `${year}-${month}-${day}`;
+            $('#editDob').val(formattedDate);
+        }
 
         $('#editUserForm').show(); // Show edit form
-
-        // Handle edit form submission
-        $('#editUserForm').off('submit').on('submit', function(event) {
-            event.preventDefault();
-
-            const updatedUserData = {
-                firstName: $('#editFirstName').val(),
-                lastName: $('#editLastName').val(),
-                middleName: $('#editMiddleName').val(),
-                dob: $('#editDob').val(),
-                user_id: user.user_id
-            };
-            console.log("Updating user data:", updatedUserData); // Log updated user data
- 
-            updateUser(updatedUserData); // Call update user function
-        });
-    }else {
-        console.error("User not found with user_id:", user_id); // Log if user is not found
     }
 }
 
+$('#updateUserButton').on('click', function(event) {
+    event.preventDefault();
+
+    const firstName = $('#editFirstName').val().trim();
+    const lastName = $('#editLastName').val().trim();
+    const dob = $('#editDob').val().trim();
+
+    if (!firstName) {
+        alert('Please enter the first name.');
+        $('#editFirstName').focus();
+        return; 
+    }
+    
+    if (!lastName) {
+        alert('Please enter the last name.');
+        $('#editLastName').focus();
+        return; 
+    }
+
+    if (!dob) {
+        alert('Please enter the date of birth.');
+        $('#editDob').focus();
+        return; 
+    }
+
+    const updatedUserData = {
+        firstName: $('#editFirstName').val(),
+        lastName: $('#editLastName').val(),
+        middleName: $('#editMiddleName').val(),
+        dob: $('#editDob').val(),
+        user_id: homeRjs.get('activeId')
+    };
+
+    updateUser(updatedUserData); 
+});
+
 function updateUser(updatedUserData) {
+    console.log("Updating user with ID:", updatedUserData.user_id)
     $.ajax({
         type: 'PUT',
         url: `/user/updateUser/${updatedUserData.user_id}`,
@@ -96,8 +121,6 @@ function updateUser(updatedUserData) {
 }
 
 function deleteUser(user_id) {
-    console.log("Updating user with ID:", updatedUserData.user_id); // Ensure user_id is not undefined
-
     if (confirm('Are you sure you want to delete this user?')) {
         $.ajax({
             type: 'DELETE',

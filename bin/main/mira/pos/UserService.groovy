@@ -11,52 +11,33 @@ class UserService {
 
     def getAllUsers() {
         Sql sql = new Sql(dataSource)
-
+    
         try {
-            def parseFormat = new SimpleDateFormat("yyyy-MM-dd")
-            def formatter = new SimpleDateFormat("dd-MM-yyyy")
             String query = """
                 SELECT c.username,
-                    CONCAT(u.lastName, ', ', u.firstName, COALESCE(CONCAT(' ', u.middleName), '')) AS fullName,
+                    CONCAT(u.lastname, ', ', u.firstname, COALESCE(CONCAT(' ', u.middlename), '')) AS fullName,
                     u.user_id,
                     u.firstName,
                     u.middleName,
                     u.lastName,
                     u.dob,
-                    ut.usertype_name AS position
+                    ut.usertype_name as position
                 FROM users u
                 JOIN credentials c ON u.user_id = c.user_id        
                 JOIN usertypes ut ON c.usertype_id = ut.usertype_id 
                 WHERE u.active = 1
             """
-
-            def result = []
-            sql.eachRow(query) { rs ->
-                def res = [:]
-                res.username = rs.getString('username')
-                res.fullName = rs.getString('fullName')
-                res.user_id = rs.getInt('user_id')
-                res.firstName = rs.getString('firstName')
-                res.middleName = rs.getString('middleName')
-                res.lastName = rs.getString('lastName')
-                res.position = rs.getString('position')
-
-                Date dob = parseFormat.parse(rs.getString('dob'))
-                res.dob = formatter.format(dob)
-
-                result.add(res)
-            }
-            return result
+            return sql.rows(query)
         } catch (Exception e) {
             log.error("Error fetching user data: ${e.message}", e)
-            return []
+            return [] 
         } finally {
-            sql.close()
+            sql.close() 
         }
     }
 
-
-   def createUser(String username, String password, String firstName, String middleName, String lastName, Long userType, String dob) {
+   def createUser(String username, String password, String firstName, String middleName, String lastName, Long userType, String dob) 
+   {
         Sql sql = new Sql(dataSource)
 
         try {

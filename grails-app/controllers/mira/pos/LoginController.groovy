@@ -1,34 +1,45 @@
 package mira.pos
 
-
 class LoginController {
 
-    def index(){
+    def loginService 
 
-        render(view:'/login')
+    def index() {
+        render(view: '/login')
     }
 
-    def authenticateUser(){
-
-        //sample
-
+    def authenticateUser() {
         def res = [:]
 
-        // return true and redirect if user account details is correct, else throw invalid credentials error
-        // implement sql to get the user details
-        // save user details (fullName and dob) in session
 
-        session.username = params.username; 
-        session.fullName = "Yukit, Yarker" //replace this from user details table
-        session.user_type = "Admin" // replace this from user details table
-   
-        res.success = true;
-        res.redirect = "${grailsApplication.config.grails.serverURL}/home/index"
+        String username = params.username
+        String password = params.password
+
+        def userDetails = loginService.authenticate(username, password)
+
+        if (userDetails) {
+            session.username = username
+            session.fullName = userDetails.fullName
+            session.dob = userDetails.dob
+            session.user_type = userDetails.usertype_name 
+            session.user_id = userDetails.user_id 
+
+            res.success = true
+            res.redirect = "${grailsApplication.config.grails.serverURL}/home/index"
+        } else {
+            res.success = false
+            res.message = "Invalid credentials. Please try again."
+        }
 
         withFormat {
             json {
-               render(contentType: "text/json") { response result: res}
+                render(contentType: "text/json") { response result: res }
             }
         }
-    } 
-} 
+    }
+
+     def logout() {
+        session.invalidate() 
+        redirect(action: 'index')
+    }
+}

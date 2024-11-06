@@ -11,7 +11,11 @@ class UserController {
     }
 
     def home() {
-        render(view: "/users/users") 
+        if (!session.username) {
+            redirect(controller: 'login', action: 'index')
+            return
+        }
+        render(view: "/users/users", model: [userFullName: session.fullName])
     }
 
     def getUserData() {
@@ -59,7 +63,9 @@ class UserController {
             String lastName = requestData.lastName
             String dobString = requestData.dob
 
-            if (userService.updateUser(id, firstName, middleName, lastName, dobString)){
+            def updateUser = userService.updateUser(id, firstName, middleName, lastName, dobString);
+
+            if (updateUser){
                 render status: 200, text:'User  updated successfully'
             }else{
                 render status: 400, text: 'User not found'

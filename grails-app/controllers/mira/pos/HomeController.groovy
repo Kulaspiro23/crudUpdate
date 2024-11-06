@@ -4,7 +4,11 @@ package mira.pos
 class HomeController {
 
     def index(){
-        render(view:'/home')
+        if (!session.username) {
+            redirect(controller: 'login', action: 'index')
+            return
+        }
+        render(view: '/home', model: [userFullName: session.fullName])
     }
 
     def getUserLoginDetails(){
